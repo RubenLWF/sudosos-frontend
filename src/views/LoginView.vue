@@ -9,7 +9,7 @@
         }}</Button
       >
       <hr />
-      <form id="login-form" @currentsubmit="ldapLogin">
+      <form id="login-form" @submit.prevent="ldapLogin">
         <!--      TODO: Form validation with vee-validate -->
         <label for="username">{{ $t('login.Username') }}</label>
         <InputText
