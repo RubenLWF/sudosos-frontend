@@ -92,6 +92,10 @@ const leftItems = ref([ // TODO: Implement Submenus
       },
       {
         label: 'Social Drink Cards',
+      },
+      {
+        label: 'Financial affairs',
+        to: 'financial-affairs'
       }
     ]
   },

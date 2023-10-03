@@ -4,6 +4,7 @@ import DashboardLayout from "@/layout/DashboardLayout.vue";
 import HomeView from '../views/HomeView.vue';
 import LoginView from "@/views/LoginView.vue";
 import BalanceView from "@/views/BalanceView.vue";
+import FinancialAffairsView from '@/views/FinancialAffairsView.vue';
 import {useAuthStore} from "@sudosos/sudosos-frontend-common";
 import jwtDecode from "jwt-decode";
 
@@ -35,6 +36,11 @@ const router = createRouter({
           path: '/balance',
           component: BalanceView,
           name: 'balance',
+        },
+        {
+          path: '/financial-affairs',
+          component: FinancialAffairsView,
+          name: 'financial-affairs',
         }
         // Add other routes for authenticated users here
       ],

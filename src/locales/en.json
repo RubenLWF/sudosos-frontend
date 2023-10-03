@@ -1,4 +1,7 @@
 {
+  "app": {
+    "Create": "Create"
+  },
   "login": {
     "SudoSOS Login": "SudoSOS Login",
     "Login via GEWIS": "Login via GEWIS",
@@ -20,5 +23,14 @@
     "Reset the password for": "Reset the password for {email}",
     "Passwords not equal": "Passwords are not equal",
     "Password not strong": "Password needs to be longer than 8 characters and needs a lower- and uppercase letter, number and a special character"
+  },
+  "financialAffairs": {
+    "Financial affairs": "Financial affairs"
+  },
+  "c_vatGroupModal": {
+    "Name": "Name",
+    "Percentage": "Percentage",
+    "Save": "Save",
+    "Confirm": "Confirm"
   }
 }
