@@ -22,13 +22,16 @@
     "Password not strong": "Password needs to be longer than 8 characters and needs a lower- and uppercase letter, number and a special character"
   },
   "financialAffairs": {
-    "Financial affairs": "Financiële affaires"
+    "Financial affairs": "Financiële affaires",
+    "VAT Groups": "BTW groepen"
   },
   "c_vatGroupModal": {
     "Name": "Naam",
     "Percentage": "Percentage",
     "Save": "Opslaan",
-    "Confirm": "Akkoord"
+    "Confirm": "Akkoord",
+    "Remove VAT group": "Verwijder BTW groep",
+    "Deletion confirmation": "Weet je zeker dat je de BTW groep \"{vatname}\" wilt verwijderen?"
   }
   
 }

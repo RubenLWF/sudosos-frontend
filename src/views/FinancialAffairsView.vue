@@ -27,7 +27,7 @@
             </template>
           </Column>
           <Column field="deleted" header="">
-            <template #body="rowData"><Button severity="danger" @click="openDeleteModal"><i class="pi pi-trash"/></Button></template>
+            <template #body="rowData"><Button severity="danger" @click="() => openDeleteModal(rowData.data)"><i class="pi pi-trash"/></Button></template>
           </Column>
           <Column
             :rowEditor="true"
@@ -35,8 +35,8 @@
             bodyStyle="text-align:center"
           />
         </DataTable>
-        <VatGroupCreateModal :vatGroup="selectedVatGroup" v-model:visible="visibleCreateModal" />
-        <VatGroupDeleteModal :vatGroup="selectedVatGroup" v-model:visible="visibleDeleteModal" />
+        <VatGroupCreateModal :close-create-modal="closeCreateModal" :vat-group="selectedVatGroup" v-model:visible="visibleCreateModal" />
+        <VatGroupDeleteModal :close-delete-modal="closeDeleteModal" :vat-group="selectedVatGroup" v-model:visible="visibleDeleteModal" />
       </CardComponent>
     </div>
   </div>
@@ -61,25 +61,38 @@ import VatGroupDeleteModal from '@/components/VatGroupDeleteModal.vue';
 const visibleCreateModal = ref(false);
 const visibleDeleteModal = ref(false);
 const vatGroups: Ref<VatGroup[]> = ref([]);
-const selectedVatGroup: Ref<UpdateVatGroupRequest | undefined> = ref();
+const selectedVatGroup: Ref<VatGroup | undefined> = ref();
 const editingRows = ref([]);
 
+const updateVatGroups = async () => {
+  const vatGroupsResp = await apiService.vatGroups.getAllVatGroups();
+  vatGroups.value = vatGroupsResp.data.records;
+}
 
 const openCreateModal = () => {
   selectedVatGroup.value = undefined;
   visibleCreateModal.value = true;
 };
 
-const openDeleteModal = () => {
-  selectedVatGroup.value = undefined;
+const closeCreateModal = async () => {
+  visibleCreateModal.value = false;
+  updateVatGroups();
+};
+
+const openDeleteModal = (vatGroup: VatGroup) => {
+  selectedVatGroup.value = vatGroup;
   visibleDeleteModal.value = true;
+};
+
+const closeDeleteModal = async () => {
+  visibleDeleteModal.value = false;
+  updateVatGroups();
 };
 
 
 
 onMounted(async () => {
-  const vatGroupsResp = await apiService.vatGroups.getAllVatGroups();
-  vatGroups.value = vatGroupsResp.data.records;
+  updateVatGroups();
 });
 
 const updateRow = async (event: DataTableRowEditSaveEvent) => {
@@ -88,6 +101,7 @@ const updateRow = async (event: DataTableRowEditSaveEvent) => {
     hidden: event.newData.hidden,
     deleted: event.newData.deleted
   });
+  vatGroups.value[event.index] = event.newData;
 };
 </script>
 

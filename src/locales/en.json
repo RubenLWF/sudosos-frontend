@@ -31,6 +31,8 @@
     "Name": "Name",
     "Percentage": "Percentage",
     "Save": "Save",
-    "Confirm": "Confirm"
+    "Confirm": "Confirm",
+    "Remove VAT group": "Remove VAT group",
+    "Deletion confirmation": "Are you sure you want to delete the VAT group \"{vatname}\"?"
   }
 }

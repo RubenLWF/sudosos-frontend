@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model:visible="visible" header="Add Product" modal>
+  <Dialog header="Add Product" modal>
     <div class="dialog">
       <form @submit="handleVatGroupCreate">
         <div class="row">
@@ -25,6 +25,12 @@ import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';
 import { ref } from 'vue';
+import type {
+  BaseUserResponse,
+  VatGroupRequest,
+  VatGroup
+} from '@sudosos/sudosos-client';
+import apiService from '@/services/ApiService';
 
 const vatGroupSchema = toTypedSchema(
   yup.object({
@@ -37,14 +43,21 @@ const { defineComponentBinds, handleSubmit, errors } = useForm({
   validationSchema: vatGroupSchema
 });
 
-
-const visible = ref(false);
 const name = defineComponentBinds('Name');
 const percentage = defineComponentBinds('Percentage')
 
+const props = defineProps(['closeCreateModal'])
 
 const handleVatGroupCreate = handleSubmit(async (values) => {
-
+  const createVatGroupRequest: VatGroupRequest = {
+    name: values.Name,
+    percentage: values.Percentage,
+    deleted: false,
+    hidden: false
+  };
+  apiService.vatGroups.createVatGroup(createVatGroupRequest).then(resp => {
+    props.closeCreateModal();
+  })
 })
 
 </script>

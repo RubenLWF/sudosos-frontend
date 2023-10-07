@@ -1,9 +1,9 @@
 <template>
-  <Dialog v-model:visible="visible" header="Remove Product" modal>
+  <Dialog :header="$t('c_vatGroupModal.Remove VAT group')" modal>
     <div class="dialog">
       <form @submit="handleVatGroupDelete">
         <div class="row">
-          Are you sure you wish to delete?
+          {{ $t('c_vatGroupModal.Deletion confirmation', { vatname: props.vatGroup && props.vatGroup.name }) }}
         </div>
         <div class="button-row">
           <Button type="submit" severity="danger" class="save-button">{{ $t('c_vatGroupModal.Confirm') }}</Button>
@@ -13,14 +13,33 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+import apiService from '@/services/ApiService';
+import type {
+  UpdateVatGroupRequest,
+  VatGroup
+} from '@sudosos/sudosos-client';
+import { useForm } from 'vee-validate';
 
-import { ref } from 'vue';
 
-const handleVatGroupDelete = async () => {
+const props = defineProps<{
+  closeDeleteModal: Function,
+  vatGroup: VatGroup | undefined
+}>()
 
-}
+const { handleSubmit } = useForm();
 
-const visible = ref(false);
+const handleVatGroupDelete = handleSubmit(async () => {
+  if(props.vatGroup == undefined) return;
+  const updateVatGroupRequest: UpdateVatGroupRequest = {
+    name: props.vatGroup.name!,
+    deleted: true,
+    hidden: false
+  };
+  apiService.vatGroups.updateVatGroup(props.vatGroup.id, updateVatGroupRequest).then(resp => {
+    props.closeDeleteModal();
+  })
+  
+})
 
 </script>
 <style scoped>
