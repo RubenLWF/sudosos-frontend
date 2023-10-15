@@ -2,42 +2,49 @@
   <div class="page-container">
     <div class="page-title">{{ $t('financialAffairs.Financial affairs') }}</div>
     <div class="content-wrapper">
-      <CardComponent header="vat groups">
-        <DataTable
-          :value="vatGroups.filter(vg => !vg.deleted)"
-          v-model:editingRows="editingRows"
-          editMode="row"
-          @row-edit-save="updateRow"
-        >
-          <template #header>
-            <div class="product-table-header">
+      <div class="row">
+        <CardComponent header="vat groups">
+          <DataTable
+              :value="vatGroups.filter(vg => !vg.deleted)"
+              v-model:editingRows="editingRows"
+              editMode="row"
+              @row-edit-save="updateRow"
+          >
+            <template #header>
+              <div class="product-table-header">
               <span>
                 <Button severity="danger" @click="openCreateModal">{{ $t('app.Create') }}</Button>
               </span>
-            </div>
-          </template>
-          <Column field="name" header="Name">
-            <template #editor="{ data, field }">
-              <InputText v-model="data[field]" style="width: 100%" />
+              </div>
             </template>
-          </Column>
-          <Column field="percentage" header="Percentage">
-            <template #body="rowData">
-              {{ `${rowData.data.percentage} %` }}
-            </template>
-          </Column>
-          <Column field="deleted" header="">
-            <template #body="rowData"><Button severity="danger" @click="() => openDeleteModal(rowData.data)"><i class="pi pi-trash"/></Button></template>
-          </Column>
-          <Column
-            :rowEditor="true"
-            style="width: 10%; min-width: 8rem"
-            bodyStyle="text-align:center"
-          />
-        </DataTable>
-        <VatGroupCreateModal :close-create-modal="closeCreateModal" :vat-group="selectedVatGroup" v-model:visible="visibleCreateModal" />
-        <VatGroupDeleteModal :close-delete-modal="closeDeleteModal" :vat-group="selectedVatGroup" v-model:visible="visibleDeleteModal" />
-      </CardComponent>
+            <Column field="name" header="Name">
+              <template #editor="{ data, field }">
+                <InputText v-model="data[field]" style="width: 100%"/>
+              </template>
+            </Column>
+            <Column field="percentage" header="Percentage">
+              <template #body="rowData">
+                {{ `${rowData.data.percentage} %` }}
+              </template>
+            </Column>
+            <Column field="deleted" header="">
+              <template #body="rowData">
+                <Button severity="danger" @click="() => openDeleteModal(rowData.data)"><i class="pi pi-trash"/></Button>
+              </template>
+            </Column>
+            <Column
+                :rowEditor="true"
+                style="width: 10%; min-width: 8rem"
+                bodyStyle="text-align:center"
+            />
+          </DataTable>
+          <VatGroupCreateModal :close-create-modal="closeCreateModal" :vat-group="selectedVatGroup"
+                               v-model:visible="visibleCreateModal"/>
+          <VatGroupDeleteModal :close-delete-modal="closeDeleteModal" :vat-group="selectedVatGroup"
+                               v-model:visible="visibleDeleteModal"/>
+        </CardComponent>
+        <InvoiceTableComponent/>
+      </div>
     </div>
   </div>
 </template>
@@ -57,6 +64,7 @@ import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import VatGroupCreateModal from '@/components/VatGroupCreateModal.vue';
 import VatGroupDeleteModal from '@/components/VatGroupDeleteModal.vue';
+import InvoiceTableComponent from "@/components/InvoiceTableComponent.vue";
 
 const visibleCreateModal = ref(false);
 const visibleDeleteModal = ref(false);
@@ -130,14 +138,6 @@ const updateRow = async (event: DataTableRowEditSaveEvent) => {
   font-family: Lato, Arial, sans-serif !important;
 }
 
-.product-image {
-  height: 4rem;
-}
-
-.p-panel {
-  width: 100%;
-}
-
 .product-table-header {
   background-color: #f8f8f8;
   display: flex;
@@ -163,15 +163,6 @@ const updateRow = async (event: DataTableRowEditSaveEvent) => {
   flex-direction: column;
 }
 
-.container-card {
-  margin-top: 1rem;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  padding: 1rem;
-  background-color: #f8f8f8 !important;
-  min-width: 100%;
-}
-
 :deep(.p-tabview) {
   background-color: #f8f8f8;
 }
@@ -187,7 +178,12 @@ const updateRow = async (event: DataTableRowEditSaveEvent) => {
   background-color: #f8f8f8 !important;
 }
 
-.content-wrapper { 
+.content-wrapper {
   width: 45%;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
 }
 </style>
