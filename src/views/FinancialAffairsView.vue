@@ -3,7 +3,7 @@
     <div class="page-title">{{ $t('financialAffairs.Financial affairs') }}</div>
     <div class="content-wrapper">
       <div class="row">
-        <CardComponent header="vat groups">
+        <CardComponent header="vat groups" style="width: 37.5%;">
           <DataTable
               :value="vatGroups.filter(vg => !vg.deleted)"
               v-model:editingRows="editingRows"
@@ -43,7 +43,7 @@
           <VatGroupDeleteModal :close-delete-modal="closeDeleteModal" :vat-group="selectedVatGroup"
                                v-model:visible="visibleDeleteModal"/>
         </CardComponent>
-        <InvoiceTableComponent/>
+        <InvoiceTableComponent style="min-width: 57.5%"/>
       </div>
     </div>
   </div>
@@ -178,12 +178,10 @@ const updateRow = async (event: DataTableRowEditSaveEvent) => {
   background-color: #f8f8f8 !important;
 }
 
-.content-wrapper {
-  width: 45%;
-}
-
 .row {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 </style>
