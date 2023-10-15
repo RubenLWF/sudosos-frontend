@@ -8,119 +8,103 @@ import DashboardLayout from "@/layout/DashboardLayout.vue";
 import HomeView from '../views/HomeView.vue';
 import LoginView from "@/views/LoginView.vue";
 import BalanceView from "@/views/BalanceView.vue";
-<<<<<<< HEAD
-import FinancialAffairsView from '@/views/FinancialAffairsView.vue';
-import {useAuthStore} from "@sudosos/sudosos-frontend-common";
-import jwtDecode from "jwt-decode";
-=======
 import UserOverView from '../views/UserOverView.vue';
 import SingleUserView from "@/views/SingleUserView.vue";
 import ProductsContainersView from "@/views/ProductsContainersView.vue";
-import apiService from "@/services/ApiService";
 import { isAuthenticated } from "@sudosos/sudosos-frontend-common";
 import PasswordResetView from "@/views/PasswordResetView.vue";
->>>>>>> origin/main
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes: [
-    {
-      path: '',
-      component: PublicLayout,
-      children: [
+    history: createWebHistory(),
+    routes: [
         {
-          path: '',
-          component: LoginView,
-          name: 'login'
+            path: '',
+            component: PublicLayout,
+            children: [
+                {
+                    path: '',
+                    component: LoginView,
+                    name: 'login'
+                },
+                {
+                    path: '/passwordreset',
+                    component: PasswordResetView,
+                    name: 'passwordreset'
+                }
+            ]
         },
         {
-          path: '/passwordreset',
-          component: PasswordResetView,
-          name: 'passwordreset'
+            path: '',
+            component: DashboardLayout,
+            meta: { requiresAuth: true },
+            children: [
+                {
+                    path: '/',
+                    component: HomeView,
+                    name: 'home'
+                },
+                {
+                    path: '/balance',
+                    component: BalanceView,
+                    name: 'balance'
+                },
+                {
+                    path: '/point-of-sale/overview',
+                    name: 'pointOfSale',
+                    component: POSOverviewView
+                },
+                {
+                    path: '/point-of-sale/info/:id',
+                    name: 'pointOfSaleInfo',
+                    component: POSInfoView,
+                    props: true
+                },
+                {
+                    path: '/point-of-sale/request',
+                    name: 'pointOfSaleCreate',
+                    component: POSCreateView
+                },
+                {
+                    path: '/point-of-sale/edit/:id',
+                    name: 'pointOfSaleEdit',
+                    component: POSEditView,
+                    props: true
+                },
+                {
+                    path: '/user-overview',
+                    component: UserOverView,
+                    name: 'userOverview'
+                },
+                {
+                    path: '/user/:userId',
+                    component: SingleUserView,
+                    name: 'user',
+                    props: true,
+                },
+                {
+                    path: '/manage-products',
+                    component: ProductsContainersView,
+                    name: 'products-containers-overview',
+                }
+                // Add other routes for authenticated users here
+            ]
         }
-      ]
-    },
-    {
-      path: '',
-      component: DashboardLayout,
-      meta: { requiresAuth: true },
-      children: [
-        {
-          path: '/',
-          component: HomeView,
-          name: 'home'
-        },
-        {
-          path: '/balance',
-          component: BalanceView,
-<<<<<<< HEAD
-          name: 'balance',
-        },
-        {
-          path: '/financial-affairs',
-          component: FinancialAffairsView,
-          name: 'financial-affairs',
-=======
-          name: 'balance'
-        },
-        {
-          path: '/point-of-sale/overview',
-          name: 'pointOfSale',
-          component: POSOverviewView
-        },
-        {
-          path: '/point-of-sale/info/:id',
-          name: 'pointOfSaleInfo',
-          component: POSInfoView,
-          props: true
-        },
-        {
-          path: '/point-of-sale/request',
-          name: 'pointOfSaleCreate',
-          component: POSCreateView
-        },
-        {
-          path: '/point-of-sale/edit/:id',
-          name: 'pointOfSaleEdit',
-          component: POSEditView,
-          props: true
-        },
-        {
-          path: '/user-overview',
-          component: UserOverView,
-          name: 'userOverview'
-        },
-        {
-          path: '/user/:userId',
-          component: SingleUserView,
-          name: 'user',
-          props: true,
-        },
-        {
-          path: '/manage-products',
-          component: ProductsContainersView,
-          name: 'products-containers-overview',
->>>>>>> origin/main
-        }
-        // Add other routes for authenticated users here
-      ]
-    }
-  ]
+    ]
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuth = isAuthenticated();
+    const isAuth = isAuthenticated();
 
-  if (to.meta?.requiresAuth && !isAuth) {
-    // If the route requires authentication and the user is not authenticated, redirect to login
-    next({ name: 'login' });
-  } else if (!to.meta?.requiresAuth && isAuth) {
-    // If the route doesn't require authentication and the user is authenticated, redirect to home
-    next({ name: 'home' });
-  } else {
-    // Allow navigation to proceed
-    next();
-  }
+    if (to.meta?.requiresAuth && !isAuth) {
+        // If the route requires authentication and the user is not authenticated, redirect to login
+        next({ name: 'login' });
+    } else if (!to.meta?.requiresAuth && isAuth) {
+        // If the route doesn't require authentication and the user is authenticated, redirect to home
+        next({ name: 'home' });
+    } else {
+        // Allow navigation to proceed
+        next();
+    }
 });
 
 export default router;

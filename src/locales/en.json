@@ -1,7 +1,4 @@
 {
-  "app": {
-    "Create": "Create"
-  },
   "login": {
     "SudoSOS": "SudoSOS",
     "SudoSOS Login": "SudoSOS Login",
@@ -23,7 +20,6 @@
     "Enter password again": "Enter password again",
     "Reset the password for": "Reset the password for {email}",
     "Passwords not equal": "Passwords are not equal",
-<<<<<<< HEAD
     "Password not strong": "Password needs to be longer than 8 characters and needs a lower- and uppercase letter, number and a special character"
   },
   "financialAffairs": {
@@ -35,8 +31,7 @@
     "Save": "Save",
     "Confirm": "Confirm",
     "Remove VAT group": "Remove VAT group",
-    "Deletion confirmation": "Are you sure you want to delete the VAT group \"{vatname}\"?"
-=======
+    "Deletion confirmation": "Are you sure you want to delete the VAT group \"{vatname}\"?",
     "Password not strong": "Password needs to be longer than 8 characters and needs a lower- and uppercase letter, number and a special character",
     "copyright": "© 2023 GEWIS",
     "separator": " | "
@@ -540,6 +535,5 @@
     "403": "You cannot access this data",
     "404": "This data does not seem to exist",
     "500": "Something is going wrong, please contact the SudoSOS team"
->>>>>>> origin/main
   }
 }
