@@ -113,6 +113,10 @@ const leftItems = ref([
       },
       {
         label: t('app.Social drink cards'),
+      },
+      {
+        label: 'Borrelrooster',
+        to: '/borrelrooster',
       }
     ]
   },

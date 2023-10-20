@@ -13,6 +13,7 @@ import SingleUserView from "@/views/SingleUserView.vue";
 import ProductsContainersView from "@/views/ProductsContainersView.vue";
 import { isAuthenticated } from "@sudosos/sudosos-frontend-common";
 import PasswordResetView from "@/views/PasswordResetView.vue";
+import BorrelroosterView from "@/views/BorrelroosterView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -85,6 +86,11 @@ const router = createRouter({
           path: '/manage-products',
           component: ProductsContainersView,
           name: 'products-containers-overview',
+        },
+        {
+          path: '/borrelrooster',
+          component: BorrelroosterView,
+          name: 'borrelrooster'
         }
         // Add other routes for authenticated users here
       ]
