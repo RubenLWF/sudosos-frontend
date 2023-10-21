@@ -15,6 +15,7 @@ import { isAuthenticated, useAuthStore, useUserStore } from "@sudosos/sudosos-fr
 import PasswordResetView from "@/views/PasswordResetView.vue";
 import { UserRole } from '@/utils/rbacUtils';
 import 'vue-router'
+import FinancialAffairsView from "@/views/FinancialAffairsView.vue";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -110,94 +111,13 @@ const router = createRouter({
           name: 'products-containers-overview',
           meta: { requiresAuth: true, isBAC: true }
         },
-        const router = createRouter({
-  history: createWebHistory(),
-  routes: [
-    {
-      path: '',
-      component: PublicLayout,
-      children: [
         {
-          path: '',
-          component: LoginView,
-          name: 'login'
-        },
-        {
-          path: '/passwordreset',
-          component: PasswordResetView,
-          name: 'passwordreset'
-        },
-      ]
-    },
-    {
-      path: '',
-      component: DashboardLayout,
-      meta: { requiresAuth: true },
-      children: [
-        {
-          path: '/',
-          component: HomeView,
-          name: 'home'
-        },
-        {
-          path: '/balance',
-          component: BalanceView,
-          name: 'balance'
-        },
-        {
-          path: '/point-of-sale/overview',
-          name: 'pointOfSale',
-          component: POSOverviewView,
-          meta: { requiresAuth: true, isSeller: true }
-        },
-        {
-          path: '/point-of-sale/info/:id',
-          name: 'pointOfSaleInfo',
-          component: POSInfoView,
-          props: true,
-          meta: { requiresAuth: true, isSeller: true }
-        },
-        {
-          path: '/point-of-sale/request',
-          name: 'pointOfSaleCreate',
-          component: POSCreateView,
-          meta: { requiresAuth: true, isSeller: true }
-        },
-        {
-          path: '/point-of-sale/edit/:id',
-          name: 'pointOfSaleEdit',
-          component: POSEditView,
-          props: true,
-          meta: { requiresAuth: true, isSeller: true }
-        },
-        {
-          path: '/user-overview',
-          component: UserOverView,
-          name: 'userOverview',
+          path: '/financial-affairs',
+          component: FinancialAffairsView,
+          name: 'financial-affairs',
           meta: { requiresAuth: true, isBAC: true }
         },
-        {
-          path: '/user/:userId',
-          component: SingleUserView,
-          name: 'user',
-          props: true,
-        },
-        {
-          path: '/manage-products',
-          component: ProductsContainersView,
-          name: 'products-containers-overview',
-          meta: { requiresAuth: true, isBAC: true }
-        },
-        {
-            path: 'financial-affairs',
-            component: FinancialAffairsView,
-            name: 'financial-affairs',
-        },
-        // Add other routes for authenticated users here
-      ]
-    }
-  ]
-});
+    ]}]});
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
@@ -223,12 +143,12 @@ router.beforeEach((to, from, next) => {
     // If the route doesn't require authentication and the user is authenticated, redirect to home
     next({ name: 'home' });
   } else {
-    if(to.meta?.isAdmin && !isAdmin()) next({ name: 'home' }); 
-    
+    if(to.meta?.isAdmin && !isAdmin()) next({ name: 'home' });
+
     if(to.meta?.isSeller && !isSeller()) next({ name: 'home' });
 
     if(to.meta?.isBAC && !isBAC()) next({ name: 'home' });
-  
+
     next();
   }
 });
