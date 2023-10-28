@@ -1,21 +1,38 @@
 import { defineStore } from "pinia";
-import type { ContainerWithProductsResponse } from "@sudosos/sudosos-client";
+import type { ContainerResponse, ContainerWithProductsResponse } from "@sudosos/sudosos-client";
 import ApiService from "@/services/ApiService";
+import apiService from "@/services/ApiService";
+import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
 
+interface ContainerStore {
+    containerMap: {[key:number]: ContainerWithProductsResponse}
+    baseContainers: ContainerResponse[]
+}
 export const useContainerStore = defineStore('container', {
     state: () => ({
-        container: null as ContainerWithProductsResponse | null,
-    }),
+        containerMap: {},
+        baseContainers: [],
+    } as ContainerStore),
     getters: {
-        getContainer(): ContainerWithProductsResponse | null {
-            return this.container;
-        }
+        getPublicContainer(): ContainerResponse[] {
+            return this.baseContainers.filter((c) => c.public);
+        },
     },
     actions: {
-        async fetchContainer(id: number){
+        async fetchAllContainers() {
+            this.baseContainers = await fetchAllPages<ContainerResponse>(
+              0,
+              Number.MAX_SAFE_INTEGER,
+              // @ts-ignore
+              (take, skip) => apiService.container.getAllContainers(take, skip)
+            );
+        },
+        async fetchContainer(id: number): Promise<ContainerWithProductsResponse> {
+            if (id in this.containerMap) return this.containerMap[id];
 
             const resp = await ApiService.container.getSingleContainer(id);
-            this.container = resp.data;
+            this.containerMap[id] = resp.data;
+            return this.containerMap[id];
         },
         async getPublicContainers(){
             const response = await ApiService.container.getPublicContainers();

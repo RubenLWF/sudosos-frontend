@@ -2,32 +2,33 @@
   <div class="container-overview">
     <TabView :active-index=1>
       <TabPanel :header="$t('containersOverview.Containers')" :disabled="true" />
-      <TabPanel v-for="container in containers" :key="container.id" :header="container.name">
+      <TabPanel v-for="container in containers" :key="container.id" :header="container.name" @tab-change="console.error('test')">
         <ScrollPanel style="height: 20rem;">
           <ProductGridComponent :products="container.products" v-if="container.products.length !== 0"/>
           <p v-if="container.products.length === 0">{{$t('c_containerComponent.no products')}}</p>
         </ScrollPanel>
       </TabPanel>
     </TabView>
-
   </div>
 </template>
 <script setup lang="ts">
-import type { ContainerWithProductsResponse } from "@sudosos/sudosos-client";
-import { onMounted, ref } from "vue";
+import type { ContainerResponse } from "@sudosos/sudosos-client";
+import {onMounted, ref, watch} from "vue";
 import ProductGridComponent from "@/components/ProductGridComponent.vue";
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import ScrollPanel from "primevue/scrollpanel";
+
 const props = defineProps({
   data: {
-    type: Array<ContainerWithProductsResponse>,
+    type: Array<ContainerResponse>,
     required: true,
   },
 });
+
+
 onMounted(()=>{
   containers.value = props.data;
-
 });
 const containers = ref();
 </script>

@@ -102,7 +102,7 @@
         </DataTable>
         <ProductModalComponent :product="selectedProduct" v-model:visible="visible" />
       </CardComponent>
-      <ContainerCardComponent v-if="containers" :data="containers" class="container-card" />
+      <ContainerCardComponent :data="baseContainers" class="container-card" />
     </div>
   </div>
 </template>
@@ -110,12 +110,10 @@
 <script setup lang="ts">
 import CardComponent from '@/components/CardComponent.vue';
 import type { Ref } from 'vue';
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import apiService from '@/services/ApiService';
 import { fetchAllPages } from '@sudosos/sudosos-frontend-common';
 import type {
-  ContainerResponse,
-  ContainerWithProductsResponse,
   ProductCategoryResponse,
   ProductResponse,
   VatGroup
@@ -129,12 +127,12 @@ import { FilterMatchMode } from 'primevue/api';
 import InputText from 'primevue/inputtext';
 import ProductModalComponent from '@/components/ProductCreateComponent.vue';
 import Dropdown from 'primevue/dropdown';
-
 import ContainerCardComponent from '@/components/ContainerCardComponent.vue';
+import { useContainerStore } from "@/stores/container.store";
+import { storeToRefs } from "pinia";
 
-const containers: Ref<ContainerWithProductsResponse[]> = ref([]);
-
-onBeforeMount(async () => {});
+const containerStore = useContainerStore();
+const { baseContainers } = storeToRefs(containerStore);
 
 const products: Ref<ProductResponse[]> = ref([]);
 const filters = ref({
@@ -168,15 +166,7 @@ onMounted(async () => {
   const vatGroupsResp = await apiService.vatGroups.getAllVatGroups();
   vatGroups.value = vatGroupsResp.data.records;
 
-  // TODO: Put getAllContainers into container store and take care of pagination
-  // See: https://github.com/GEWIS/sudosos-frontend-vue3/issues/51
-  await apiService.container.getAllContainers(500, 0).then((resp: any) => {
-    (resp.data.records as ContainerResponse[]).forEach((container) =>
-      apiService.container.getSingleContainer(container.id).then((res) => {
-        containers.value.push(res.data as ContainerWithProductsResponse);
-      })
-    );
-  });
+  await containerStore.fetchAllContainers();
 });
 
 const updateRow = async (event: DataTableRowEditSaveEvent) => {
