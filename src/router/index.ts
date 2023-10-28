@@ -11,10 +11,11 @@ import BalanceView from "@/views/BalanceView.vue";
 import UserOverView from '../views/UserOverView.vue';
 import SingleUserView from "@/views/SingleUserView.vue";
 import ProductsContainersView from "@/views/ProductsContainersView.vue";
-import { isAuthenticated, useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
+import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import PasswordResetView from "@/views/PasswordResetView.vue";
 import { UserRole } from '@/utils/rbacUtils';
-import 'vue-router'
+import 'vue-router';
+import ErrorView from "@/views/ErrorView.vue";
 import FinancialAffairsView from "@/views/FinancialAffairsView.vue";
 
 declare module 'vue-router' {
@@ -50,6 +51,11 @@ const router = createRouter({
           component: PasswordResetView,
           name: 'passwordreset'
         },
+        {
+          path: '/error',
+          component: ErrorView,
+          name: 'error',
+        }
       ]
     },
     {
@@ -112,12 +118,21 @@ const router = createRouter({
           meta: { requiresAuth: true, isBAC: true }
         },
         {
+          path: '/error',
+          component: ErrorView,
+          name: 'error',
+        },
+        {
           path: '/financial-affairs',
           component: FinancialAffairsView,
           name: 'financial-affairs',
           meta: { requiresAuth: true, isBAC: true }
         },
-    ]}]});
+        // Add other routes for authenticated users here
+      ]
+    }
+  ]
+});
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
