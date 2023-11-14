@@ -6,6 +6,7 @@
       editMode="cell"
       @cellEditComplete="updateCell"
       @cellEditInit="cellEditInit"
+      @row-click="(data) => router.push({name: 'invoice', params: {invoiceId: data.data.invoiceId}})"
   >
     <Column field="id" header="ref" />
     <Column field="to" header="User">
@@ -34,6 +35,20 @@
         {{ `€ ${(slotProps.data.transfer.amount.amount / 100).toFixed(2)}` }}
       </template>
     </Column>
+    <Column
+      headerStyle="width: 3rem; text-align: center"
+      bodyStyle="text-align: center; overflow: visible"
+    >
+      <template #body="slotProps">
+        <Button
+          @click="router.push({name: 'invoice', params: {invoiceId: slotProps.data.id}})"
+          type="button"
+          severity="danger"
+          icon="pi pi-info-circle"
+          outlined
+        />
+      </template>
+    </Column>
   </DataTable>
   </CardComponent>
 </template>
@@ -45,6 +60,7 @@ import apiService from "@/services/ApiService";
 import DataTable, {DataTableCellEditCompleteEvent, DataTableCellEditInitEvent} from "primevue/datatable";
 import Column from "primevue/column";
 import type {InvoiceResponse} from "@sudosos/sudosos-client";
+import { useRouter } from "vue-router";
 
 const invoices: Ref<Array<InvoiceResponse>> = ref([]);
 const editingRows = ref();
@@ -54,6 +70,8 @@ const stateOptions: Array<{label: string, value: string}> = [
   {label: "PAID", value: "PAID"},
   {label: "DELETED", value: "DELETED"}
 ];
+
+const router = useRouter();
 
 onMounted(async () => {
   await getInvoices();

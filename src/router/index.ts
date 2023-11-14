@@ -17,6 +17,7 @@ import { UserRole } from '@/utils/rbacUtils';
 import 'vue-router';
 import ErrorView from "@/views/ErrorView.vue";
 import FinancialAffairsView from "@/views/FinancialAffairsView.vue";
+import InvoiceView from "@/views/InvoiceView.vue";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -126,8 +127,14 @@ const router = createRouter({
           path: '/financial-affairs',
           component: FinancialAffairsView,
           name: 'financial-affairs',
-          meta: { requiresAuth: true, isBAC: true }
+          meta: { requiresAuth: true, isBAC: true },
         },
+        {
+          path: '/invoice/:invoiceId',
+          component: InvoiceView,
+          name: 'invoice',
+          meta: { requiresAuth: true, isBAC: true },
+        }
         // Add other routes for authenticated users here
       ]
     }
