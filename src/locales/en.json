@@ -551,5 +551,8 @@
     "editPOS": "Succesfully edited POS.",
     "createContainer": "Successfully created container.",
     "productCreated": "Successfully created product."
+  },
+  "invoices": {
+    "invoices": "invoices"
   }
 }
