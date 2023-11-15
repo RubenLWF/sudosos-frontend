@@ -60,6 +60,11 @@
             <div class="action-buttons">
               <Button type="submit" severity="success">{{ t('invoices.update') }}</Button>
               <Button @click="deleteInvoice" severity="danger">{{ t('invoices.delete') }}</Button>
+              <Button
+                @click="generateInvoicePDF"
+                severity="warning"
+                :header="t('invoices.generate')"
+              />
             </div>
           </form>
         </CardComponent>
@@ -85,12 +90,15 @@ import * as yup from 'yup';
 import { handleError } from '@/utils/errorUtils';
 import { useToast } from 'primevue/usetoast';
 import { useI18n } from 'vue-i18n';
+import axios from 'axios';
 
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
-
+const axiosInstance = axios.create({
+  baseURL: 'http://localhost:3001',
+});
 const invoice: Ref<InvoiceResponse | undefined> = ref();
 // TODO: Figure out how the fuck I type this
 const amount = ref();
@@ -176,6 +184,229 @@ const deleteInvoice = async () => {
       router.push({ name: 'financial-affairs' });
     })
     .catch((error) => handleError(error, toast));
+};
+type PriceInclVat = {
+  amount: number;
+  currency: string;
+  precision: number;
+};
+
+type Product = {
+  description: string;
+  amount: number;
+  priceInclVat: PriceInclVat;
+  vatPercentage: number;
+};
+
+type ProductPricing = {
+  basePrice: number;
+  vatAmount: number;
+  vatCategory: 'ZERO' | 'LOW' | 'HIGH' | 'UNKNOWN';
+};
+
+type ConvertedProduct = {
+  name: string;
+  summary: string;
+  pricing: ProductPricing;
+};
+
+type InvoiceReferences = {
+    ourReference: string,
+    yourReference: string,
+    costCenter: boolean
+}
+
+type Identity = {
+  firstName: string,
+  lastNamePreposition: string,
+  lastName: string,
+  fullName: string,
+  function?: string,
+}
+
+type Dates = {
+  date: string,
+  dueDate?: string,
+  dueDays?: number,
+  startDate?: string,
+  endDate?: string,
+}
+
+type Company = {
+  name: string,
+  id?: string,
+}
+
+type Address = {
+  street: string,
+  postalCode: string,
+  city: string,
+  country: string,
+}
+
+type FileSettings = {
+  name: string,
+  language: string,
+  fileType: string,
+  stationery?: string,
+  createdAt: string,
+}
+
+type TotalPricing = {
+  exclVat: number,
+  lowVat: number,
+  highVat: number,
+  inclVat: number,
+}
+
+type InvoiceParameters = {
+  summarizedProducts?: ConvertedProduct[],
+  reference?: InvoiceReferences,
+  products: ConvertedProduct[],
+  pricing: TotalPricing,
+  subject: string,
+  recipient: Identity,
+  sender: Identity,
+  dates: Dates,
+  company: Company,
+  address: Address,
+}
+
+function calculateProductPricing(amount: number, priceInclVat: number, vatPercentage: number): ProductPricing {
+  const basePrice = priceInclVat * amount;
+  let vatCategory: 'ZERO' | 'LOW' | 'HIGH' | 'UNKNOWN' = 'UNKNOWN';
+
+  switch (vatPercentage) {
+    case 0:
+      vatCategory = 'ZERO';
+      break;
+    case 9:
+      vatCategory = 'LOW';
+      break;
+    case 21:
+      vatCategory = 'HIGH';
+      break;
+  }
+
+  return { basePrice, vatAmount: vatPercentage, vatCategory };
+}
+
+function convertProducts(products: Product[]): ConvertedProduct[] {
+  return products.map(product => {
+    const pricing = calculateProductPricing(
+      product.amount,
+      product.priceInclVat.amount,
+      product.vatPercentage
+    );
+
+    return {
+      name: product.description,
+      summary: product.description,
+      pricing
+    };
+  });
+}
+
+function calculateTotalPricing(convertedProducts: ConvertedProduct[]): TotalPricing {
+  let totalExclVat = 0;
+  let totalLowVat = 0;
+  let totalHighVat = 0;
+  let totalInclVat = 0;
+
+  convertedProducts.forEach((product) => {
+    const exclVat = product.pricing.basePrice / (1 + product.pricing.vatAmount / 100);
+    const inclVat = product.pricing.basePrice;
+    const vatAmount = inclVat - exclVat;
+
+    totalExclVat += exclVat;
+    totalInclVat += inclVat;
+    switch (product.pricing.vatCategory) {
+      case 'LOW':
+        totalLowVat += vatAmount;
+        break;
+      case 'HIGH':
+        totalHighVat += vatAmount;
+        break;
+    }
+  });
+
+  return {
+    exclVat: totalExclVat,
+    lowVat: totalLowVat,
+    highVat: totalHighVat,
+    inclVat: totalInclVat,
+  };
+}
+
+// TODO: Extract this into APIHelper
+const generateInvoicePDF = () => {
+    console.log('generating invoice');
+    console.log(invoice.value);
+
+    const products: ConvertedProduct[] = convertProducts(invoice.value.invoiceEntries);
+    const reference: InvoiceReferences = {
+        ourReference: invoice.value.id.toString(),
+        yourReference: "-",
+        costCenter: false,
+    };
+    const subject: string = invoice.value.description;
+    const sender: Identity = {
+      firstName: 'BAr',
+      lastNamePreposition: '',
+      lastName: 'Commissie',
+      fullName: 'BAr Commissie'
+    };
+
+    const recipient: Identity = {
+      firstName: invoice.value.to.firstName,
+      lastNamePreposition: '',
+      lastName: invoice.value.to.lastName,
+      fullName: `${invoice.value.to.firstName} ${invoice.value.to.lastName}`
+    };
+
+    const company: Company = {
+      name: 'GEWIS'
+    };
+
+    const dates: Dates = {
+      date: '2023-11-15T00:00:00'
+    };
+
+    const address: Address = {
+      street: 'De Groene Loper 5',
+      postalCode: '5612AE',
+      city: 'Eindhoven',
+      country: 'The Netherlands',
+    };
+
+    const settings: FileSettings = {
+      name: 'Test Invoice',
+      language: 'DUTCH',
+      fileType: 'PDF',
+      createdAt: '2023-11-15',
+    };
+
+    const totalPricing: TotalPricing = calculateTotalPricing(products);
+
+    const invoiceParameters: InvoiceParameters = {
+      reference,
+      products,
+      pricing: totalPricing,
+      subject,
+      recipient,
+      sender,
+      dates,
+      company,
+      address
+    };
+
+    axiosInstance.post('/invoice/invoice', { params: invoiceParameters, settings: settings }, {responseType: 'blob'}).then(response => {
+      window.open(URL.createObjectURL(response.data));
+    })
+      .catch(error => {
+        console.warn(totalPricing);
+        console.error(error);
+      });
 };
 </script>
 

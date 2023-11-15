@@ -564,6 +564,7 @@
     "delete": "Delete Invoice",
     "amount": "Invoice amount",
     "products": "Invoice Products",
-    "edit": "Edit Invoice Data"
+    "edit": "Edit Invoice Data",
+    "generate": "Generate Invoice"
   }
 }
