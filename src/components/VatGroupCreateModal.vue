@@ -24,11 +24,8 @@
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';
-import { ref } from 'vue';
 import type {
-  BaseUserResponse,
   VatGroupRequest,
-  VatGroup
 } from '@sudosos/sudosos-client';
 import apiService from '@/services/ApiService';
 
@@ -44,9 +41,9 @@ const { defineComponentBinds, handleSubmit, errors } = useForm({
 });
 
 const name = defineComponentBinds('Name');
-const percentage = defineComponentBinds('Percentage')
+const percentage = defineComponentBinds('Percentage');
 
-const props = defineProps(['closeCreateModal'])
+const props = defineProps(['closeCreateModal']);
 
 const handleVatGroupCreate = handleSubmit(async (values) => {
   const createVatGroupRequest: VatGroupRequest = {
@@ -55,10 +52,10 @@ const handleVatGroupCreate = handleSubmit(async (values) => {
     deleted: false,
     hidden: false
   };
-  apiService.vatGroups.createVatGroup(createVatGroupRequest).then(resp => {
+  apiService.vatGroups.createVatGroup(createVatGroupRequest).then(() => {
     props.closeCreateModal();
-  })
-})
+  });
+});
 
 </script>
 <style scoped>

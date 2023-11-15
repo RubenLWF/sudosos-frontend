@@ -91,7 +91,7 @@ const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 
-const invoice: Ref<InvoiceResponse> = ref();
+const invoice: Ref<InvoiceResponse | undefined> = ref();
 // TODO: Figure out how the fuck I type this
 const amount = ref();
 
@@ -124,7 +124,7 @@ const description = defineComponentBinds('description');
 onBeforeMount(async () => {
   await apiService.invoices.getSingleInvoice(Number(route.params.invoiceId)).then((res) => {
     invoice.value = res.data;
-    amount.value = invoice.value.transfer.amount.amount;
+    amount.value = invoice.value.transfer ? invoice.value.transfer.amount.amount : 0;
     setValues({
       addressee: invoice.value.addressee,
       description: invoice.value.description,
@@ -134,6 +134,15 @@ onBeforeMount(async () => {
 });
 
 const handleEditInvoice = handleSubmit(async (values) => {
+  if (!invoice.value) {
+    toast.add({
+      severity: 'error',
+      summary: '404 - NOT FOUND',
+      detail: 'Invoice was not found',
+      life: 3000
+    });
+    return;
+  }
   await apiService.invoices
     .updateInvoice(invoice.value.id, {
       addressee: values.addressee,
@@ -152,6 +161,15 @@ const handleEditInvoice = handleSubmit(async (values) => {
 });
 
 const deleteInvoice = async () => {
+  if (!invoice.value) {
+    toast.add({
+      severity: 'error',
+      summary: '404 - NOT FOUND',
+      detail: 'Invoice was not found',
+      life: 3000
+    });
+    return;
+  }
   await apiService.invoices
     .deleteInvoice(invoice.value.id)
     .then(() => {

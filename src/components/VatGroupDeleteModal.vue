@@ -24,7 +24,7 @@ import { useForm } from 'vee-validate';
 const props = defineProps<{
   closeDeleteModal: Function,
   vatGroup: VatGroup | undefined
-}>()
+}>();
 
 const { handleSubmit } = useForm();
 
@@ -35,11 +35,11 @@ const handleVatGroupDelete = handleSubmit(async () => {
     deleted: true,
     hidden: false
   };
-  apiService.vatGroups.updateVatGroup(props.vatGroup.id, updateVatGroupRequest).then(resp => {
+  apiService.vatGroups.updateVatGroup(props.vatGroup.id, updateVatGroupRequest).then(() => {
     props.closeDeleteModal();
-  })
-  
-})
+  });
+
+});
 
 </script>
 <style scoped>

@@ -76,7 +76,7 @@ const { t } = useI18n();
 const updateVatGroups = async () => {
   const vatGroupsResp = await apiService.vatGroups.getAllVatGroups();
   vatGroups.value = vatGroupsResp.data.records;
-}
+};
 
 const openCreateModal = () => {
   selectedVatGroup.value = undefined;

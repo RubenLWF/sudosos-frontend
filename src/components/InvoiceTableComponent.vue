@@ -55,20 +55,22 @@
 
 <script setup lang="ts">
 import CardComponent from "@/components/CardComponent.vue";
-import {onMounted, Ref, ref} from "vue";
+import { onMounted, ref } from "vue";
+import type { Ref } from "vue";
 import apiService from "@/services/ApiService";
-import DataTable, {DataTableCellEditCompleteEvent, DataTableCellEditInitEvent} from "primevue/datatable";
+import DataTable from "primevue/datatable";
+import type { DataTableCellEditCompleteEvent, DataTableCellEditInitEvent } from "primevue/datatable";
 import Column from "primevue/column";
-import type {InvoiceResponse} from "@sudosos/sudosos-client";
+import type { InvoiceResponse, InvoiceResponseTypes } from "@sudosos/sudosos-client";
 import { useRouter } from "vue-router";
 
-const invoices: Ref<Array<InvoiceResponse>> = ref([]);
+const invoices: Ref<Array<InvoiceResponseTypes>> = ref([]);
 const editingRows = ref();
 const stateOptions: Array<{label: string, value: string}> = [
-  {label: "CREATED", value: "CREATED"},
-  {label: "SENT", value: "SENT"},
-  {label: "PAID", value: "PAID"},
-  {label: "DELETED", value: "DELETED"}
+  { label: "CREATED", value: "CREATED" },
+  { label: "SENT", value: "SENT" },
+  { label: "PAID", value: "PAID" },
+  { label: "DELETED", value: "DELETED" }
 ];
 
 const router = useRouter();
@@ -80,6 +82,7 @@ onMounted(async () => {
 
 const getInvoices = async () => {
   let res = await apiService.invoices.getAllInvoices();
+  console.log(res.data);
   invoices.value = res.data.records;
 };
 
@@ -99,7 +102,7 @@ const updateCell = async (event: DataTableCellEditCompleteEvent) => {
 
 const cellEditInit = (event: DataTableCellEditInitEvent) => {
   console.log(event);
-}
+};
 </script>
 
 <style scoped lang="scss">
