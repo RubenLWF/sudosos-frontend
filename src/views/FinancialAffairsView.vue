@@ -1,9 +1,9 @@
 <template>
   <div class="page-container">
-    <div class="page-title">{{ $t('financialAffairs.Financial affairs') }}</div>
+    <div class="page-title">{{ t('financialAffairs.financialAffairs') }}</div>
     <div class="content-wrapper">
       <div class="row">
-        <CardComponent header="vat groups" style="width: 37.5%;">
+        <CardComponent :header="t('financialAffairs.vatGroups')" style="width: 37.5%;">
           <DataTable
               :value="vatGroups.filter(vg => !vg.deleted)"
               v-model:editingRows="editingRows"
@@ -17,12 +17,12 @@
               </span>
               </div>
             </template>
-            <Column field="name" header="Name">
+            <Column field="name" :header="t('c_vatGroupModal.Name')">
               <template #editor="{ data, field }">
                 <InputText v-model="data[field]" style="width: 100%"/>
               </template>
             </Column>
-            <Column field="percentage" header="Percentage">
+            <Column field="percentage" :header="t('c_vatGroupModal.Percentage')">
               <template #body="rowData">
                 {{ `${rowData.data.percentage} %` }}
               </template>
@@ -55,7 +55,6 @@ import type { Ref } from 'vue';
 import { onMounted, ref } from 'vue';
 import apiService from '@/services/ApiService';
 import type {
-  UpdateVatGroupRequest,
   VatGroup
 } from '@sudosos/sudosos-client';
 import type { DataTableRowEditSaveEvent } from 'primevue/datatable';
@@ -65,12 +64,14 @@ import InputText from 'primevue/inputtext';
 import VatGroupCreateModal from '@/components/VatGroupCreateModal.vue';
 import VatGroupDeleteModal from '@/components/VatGroupDeleteModal.vue';
 import InvoiceTableComponent from "@/components/InvoiceTableComponent.vue";
+import { useI18n } from 'vue-i18n';
 
 const visibleCreateModal = ref(false);
 const visibleDeleteModal = ref(false);
 const vatGroups: Ref<VatGroup[]> = ref([]);
 const selectedVatGroup: Ref<VatGroup | undefined> = ref();
 const editingRows = ref([]);
+const { t } = useI18n();
 
 const updateVatGroups = async () => {
   const vatGroupsResp = await apiService.vatGroups.getAllVatGroups();

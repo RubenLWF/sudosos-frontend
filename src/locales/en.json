@@ -23,7 +23,8 @@
     "Password not strong": "Password needs to be longer than 8 characters and needs a lower- and uppercase letter, number and a special character"
   },
   "financialAffairs": {
-    "Financial affairs": "Financial affairs"
+    "financialAffairs": "Financial affairs",
+    "vatGroups": "Vat Groups"
   },
   "c_vatGroupModal": {
     "Name": "Name",
@@ -553,6 +554,16 @@
     "productCreated": "Successfully created product."
   },
   "invoices": {
-    "invoices": "invoices"
+    "invoices": "invoices",
+    "invoice": "Invoice",
+    "by": "By",
+    "description": "Description",
+    "addressee": "Addressee",
+    "status": "Status",
+    "update": "Update Invoice",
+    "delete": "Delete Invoice",
+    "amount": "Invoice amount",
+    "products": "Invoice Products",
+    "edit": "Edit Invoice Data"
   }
 }

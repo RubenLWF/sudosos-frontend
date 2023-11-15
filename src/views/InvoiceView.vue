@@ -1,13 +1,12 @@
 <template>
   <div class="page-container">
-    <div class="page-title">{{ `Invoice ${invoice.id}` }}</div>
+    <div class="page-title">{{ `${t('invoices.invoice')} ${invoice.id}` }}</div>
     <div class="content-wrapper">
-      <div class="row"></div>
       <div class="row">
-        <CardComponent header="Edit Invoice Data" style="width: 40%">
+        <CardComponent :header="t('invoices.edit')" style="width: 40%">
           <form @submit="handleEditInvoice">
             <div class="input-field">
-              <b class="bolder">By</b>
+              <b class="bolder">{{ t('invoices.by') }}</b>
               <InputText
                 class="input"
                 type="text"
@@ -17,7 +16,7 @@
               <br />
             </div>
             <div class="input-field">
-              <b class="bolder">Description</b>
+              <b class="bolder">{{ t('invoices.description') }}</b>
               <InputText
                 class="input"
                 type="text"
@@ -30,7 +29,7 @@
               <br v-else />
             </div>
             <div class="input-field">
-              <b class="bolder">Addressee</b>
+              <b class="bolder">{{ t('invoices.addressee') }}</b>
               <InputText
                 class="input"
                 type="text"
@@ -43,7 +42,7 @@
               <br v-else />
             </div>
             <div class="input-field">
-              <b class="bolder">Status</b>
+              <b class="bolder">{{ t('invoices.status') }}</b>
               <Dropdown
                 class="input"
                 v-bind="status"
@@ -59,36 +58,39 @@
               <br v-else />
             </div>
             <div class="action-buttons">
-              <Button type="submit" severity="success">Update Invoice</Button>
-              <Button @click="deleteInvoice" severity="danger">Delete Invoice</Button>
+              <Button type="submit" severity="success">{{ t('invoices.update') }}</Button>
+              <Button @click="deleteInvoice" severity="danger">{{ t('invoices.delete') }}</Button>
             </div>
           </form>
         </CardComponent>
-        <CardComponent header="Invoice Amount">
+        <CardComponent :header="t('invoices.amount')">
           <span class="balance-amount">{{ formattedAmount }}</span>
         </CardComponent>
       </div>
-      <TransactionsTableComponent header="Invoice Products" style="width: 100%" />
+      <TransactionsTableComponent :header="t('invoices.products')" style="width: 100%" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import apiService from '@/services/ApiService';
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref } from 'vue';
 import type { Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import type { InvoiceResponse } from "@sudosos/sudosos-client";
+import type { InvoiceResponse } from '@sudosos/sudosos-client';
 import CardComponent from '@/components/CardComponent.vue';
 import TransactionsTableComponent from '@/components/TransactionsTableComponent.vue';
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
-import { handleError } from "@/utils/errorUtils";
-import { useToast } from "primevue/usetoast";
+import { handleError } from '@/utils/errorUtils';
+import { useToast } from 'primevue/usetoast';
+import { useI18n } from 'vue-i18n';
 
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n();
+
 const invoice: Ref<InvoiceResponse> = ref();
 // TODO: Figure out how the fuck I type this
 const amount = ref();
@@ -126,30 +128,36 @@ onBeforeMount(async () => {
     setValues({
       addressee: invoice.value.addressee,
       description: invoice.value.description,
-      status: invoice.value.currentState.state,
+      status: invoice.value.currentState.state
     });
   });
 });
 
 const handleEditInvoice = handleSubmit(async (values) => {
-  await apiService.invoices.updateInvoice(invoice.value.id, {
-    addressee: values.addressee,
-    description: values.description,
-    state: values.status,
-  }).then(() => {
-    toast.add({
-      severity: 'success',
-      summary: "Success",
-      detail: "Invoice has been updated",
-      life: 3000
-    });
-  }).catch((error) => handleError(error, toast));
+  await apiService.invoices
+    .updateInvoice(invoice.value.id, {
+      addressee: values.addressee,
+      description: values.description,
+      state: values.status
+    })
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Invoice has been updated',
+        life: 3000
+      });
+    })
+    .catch((error) => handleError(error, toast));
 });
 
 const deleteInvoice = async () => {
-  await apiService.invoices.deleteInvoice(invoice.value.id).then(() => {
-    router.push({ name: 'financial-affairs' });
-  }).catch((error) => handleError(error, toast));
+  await apiService.invoices
+    .deleteInvoice(invoice.value.id)
+    .then(() => {
+      router.push({ name: 'financial-affairs' });
+    })
+    .catch((error) => handleError(error, toast));
 };
 </script>
 
