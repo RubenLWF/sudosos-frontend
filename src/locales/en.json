@@ -282,7 +282,10 @@
     "users":  "Users",
     "info": "Info",
     "download": "Download",
-    "voucherGroups": "Voucher Groups"
+    "voucherGroups": "Voucher Groups",
+    "balance": "Balance",
+    "create": "Create",
+    "createLong": "Create Voucher Group"
   },
   "banners": {
     "Banners": "Banners"

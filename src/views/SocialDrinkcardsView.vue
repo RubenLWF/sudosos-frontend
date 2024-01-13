@@ -3,6 +3,9 @@
     <div class="page-title">{{ t('socialDrinkCards.overview') }}</div>
     <div class="content-wrapper gap-5 flex md:flex-row flex-column">
       <CardComponent :header="t('socialDrinkCards.voucherGroups')" class="w-full">
+        <template #topAction>
+          <Button @click="visible = true">{{ t('socialDrinkCards.create') }}</Button>
+        </template>
         <DataTable
           :value="voucherGroups"
           paginator
@@ -17,11 +20,15 @@
           <Column field="activeEndDate" :header="t('socialDrinkCards.activeEndDate')">
             <template #body="slotProps">{{ formatDateTime(new Date(slotProps.data.activeEndDate)) }}</template>
           </Column>
+          <Column field="balance" :header="t('socialDrinkCards.balance')">
+            <template #body="slotProps">{{ formatPrice(slotProps.data.balance) }}</template>
+          </Column>
           <Column field="users.length" :header="t('socialDrinkCards.users')" />
           <Column :header="t('socialDrinkCards.info')" />
           <Column :header="t('socialDrinkCards.download')" />
         </DataTable>
       </CardComponent>
+      <Dialog v-model:visible="visible" class="w-auto flex w-9 md:w-4" :header="t('socialDrinkCards.createLong')" />
     </div>
   </div>
 </template>
@@ -35,12 +42,12 @@ import apiService from "@/services/ApiService";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import CardComponent from "@/components/CardComponent.vue";
-import { formatDateTime } from "@/utils/formatterUtils";
+import { formatDateTime, formatPrice } from "@/utils/formatterUtils";
 
 const { t } = useI18n();
 
 const voucherGroups: Ref<Array<VoucherGroupResponse>> = ref([]);
-
+const visible: Ref<boolean> = ref(false)
 onMounted(async () => {
   voucherGroups.value = await fetchAllPages<FineHandoutEventResponse>(
     0,
