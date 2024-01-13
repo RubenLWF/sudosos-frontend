@@ -20,6 +20,7 @@ import 'vue-router';
 import ErrorView from "@/views/ErrorView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import FineView from "@/views/FineView.vue";
+import SocialDrinkcardsView from "@/views/SocialDrinkcardsView.vue";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -151,6 +152,12 @@ const router = createRouter({
           component: FineView,
           name: 'fine',
           meta: { requiresAuth: true, isBAC: true }
+        },
+        {
+          path: '/social-drink-cards',
+          component: SocialDrinkcardsView,
+          name: 'social-drink-cards',
+          meta: { requiresAuth: true, isBAC: true },
         },
         // Add other routes for authenticated users here
       ]

@@ -159,6 +159,7 @@ const leftItems = ref([
       },
       {
         label: t('app.Social drink cards'),
+        route: '/social-drink-cards'
       },
       {
         label: t('fine.fineOverview'),
@@ -264,6 +265,7 @@ const mobileItems = ref([
       },
       {
         label: t('app.Social drink cards'),
+        route: '/social-drink-cards'
       },
       {
         label: t('fine.fineOverview'),
