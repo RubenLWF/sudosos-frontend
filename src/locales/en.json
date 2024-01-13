@@ -274,7 +274,15 @@
     "Page": "Page"
   },
   "socialDrinkCards": {
-    "overview": "Social drink cards overview"
+    "overview": "Social drink cards overview",
+    "id": "id",
+    "name": "name",
+    "activeStartDate": "Start Date",
+    "activeEndDate": "End Date",
+    "users":  "Users",
+    "info": "Info",
+    "download": "Download",
+    "voucherGroups": "Voucher Groups"
   },
   "banners": {
     "Banners": "Banners"
