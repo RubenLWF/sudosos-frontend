@@ -6,7 +6,7 @@
   >
     <div class="flex flex-column justify-content-center">
       <h1 class="text-center font-medium text-6xl">{{ displayBalance }}</h1>
-      <p class="text-center text-base font-semibold text-red-500" v-if="userBalance && userBalance.fine">
+      <p class="text-center text-base font-semibold text-red-500" v-if="userBalance && userBalance.fine && userBalance.amount.amount < 0">
         {{ isAllFine ? $t('c_currentBalance.allIsFines') : $t('c_currentBalance.someIsFines', { fine: displayFine }) }}
       </p>
     </div>
