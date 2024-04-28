@@ -159,6 +159,10 @@ const leftItems = computed(() => [
         label: t('fine.fineOverview'),
         route: '/fine',
       },
+      {
+        label: t('invoice.overview'),
+        route: '/invoice',
+      },
     ]
   },
     ]);
@@ -255,6 +259,10 @@ const mobileItems = computed(() => [
       {
         label: t('fine.fineOverview'),
         route: '/fine',
+      },
+      {
+        label: t('invoice.overview'),
+        route: '/invoice',
       },
     ]
   },

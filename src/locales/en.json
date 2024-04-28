@@ -22,16 +22,23 @@
     "User overview": "User overview"
   },
   "balance": {
-    "Balance increase amount": "Increase balance:",
-    "Payment button": "Top up",
-    "Increase balance": "Increase balance",
-    "Price": "Price",
-    "minPayment": "Note: minimum topup is €10 or needs to pay off debt.",
     "Balance after": "Balance after:",
-    "Start payment": "Start payment"
+    "Balance increase amount": "Increase balance:",
+    "Increase balance": "Increase balance",
+    "Payment button": "Top up",
+    "Price": "Price",
+    "Start payment": "Start payment",
+    "minPayment": "Note: minimum topup is €10 or needs to pay off debt."
   },
   "banner": {
+    "Active": "Active",
+    "Banner overview": "Banner overview",
     "Banners": "Banners",
+    "Create banner": "Create banner",
+    "Edit banner": "Edit banner",
+    "Filter active": "Filter active",
+    "Filter not expired": "Filter not expired",
+    "Not active": "Not active",
     "active": "Active: ",
     "duration": "Duration: ",
     "name": "Name: ",
@@ -40,14 +47,7 @@
     "seconds": "Seconds",
     "submit": "Submit",
     "till": "till",
-    "timespan": "Timespan: ",
-    "Banner overview": "Banner overview",
-    "Filter active": "Filter active",
-    "Filter not expired": "Filter not expired",
-    "Active": "Active",
-    "Not active": "Not active",
-    "Edit banner": "Edit banner",
-    "Create banner": "Create banner"
+    "timespan": "Timespan: "
   },
   "c_ContainerAssign": {
     "Assign product": "Assign product",
@@ -173,6 +173,9 @@
   },
   "home": {
     "Overview": "Overview"
+  },
+  "invoice": {
+    "overview": "Invoice Overview"
   },
   "login": {
     "Back": "Back to home",

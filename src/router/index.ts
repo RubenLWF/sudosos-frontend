@@ -22,6 +22,7 @@ import ProfileView from "@/views/ProfileView.vue";
 import FineView from "@/views/FineView.vue";
 import LocalLoginView from "@/views/LocalLoginView.vue";
 import LoginLayout from "@/layout/LoginLayout.vue";
+import InvoiceView from "@/views/InvoiceView.vue";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -162,6 +163,12 @@ const router = createRouter({
           meta: { requiresAuth: true, isBAC: true }
         },
         {
+          path: '/invoice',
+          component: InvoiceView,
+          name: 'invoice',
+          meta: { requiresAuth: true, isBAC: true }
+        },
+        {
           path: '/banners',
           component: BannersView,
           name: 'banners',
@@ -209,7 +216,7 @@ router.beforeEach((to, from, next) => {
     if(to.meta?.isSeller && !isSeller()) next({ name: 'home' });
 
     if(to.meta?.isBAC && !isBAC()) next({ name: 'home' });
-    
+
     next();
   }
 });
