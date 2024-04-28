@@ -175,6 +175,9 @@
     "Overview": "Overview"
   },
   "invoice": {
+    "balance": "Balance",
+    "fullName": "Name",
+    "open": "Open Invoice Accounts",
     "overview": "Invoice Overview"
   },
   "login": {

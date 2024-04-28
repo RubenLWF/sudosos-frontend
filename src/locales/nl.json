@@ -175,6 +175,9 @@
     "Overview": "Overzicht"
   },
   "invoice": {
+    "balance": "Saldo",
+    "fullName": "Naam",
+    "open": "Open Factuuraccounts",
     "overview": "Facturen Overzicht"
   },
   "login": {

@@ -71,7 +71,6 @@
             <Skeleton class="w-2 my-1 h-1rem surface-300"/>
           </template>
         </Column>
-
         <Column field="ofAge">
           <template #header>
             <div class="flex flex-row gap-2 align-items-center">
