@@ -175,10 +175,15 @@
     "Overview": "Overview"
   },
   "invoice": {
+    "amount": "Amount",
     "balance": "Balance",
     "fullName": "Name",
+    "invoiceTable": "Invoice Overview",
     "open": "Open Invoice Accounts",
-    "overview": "Invoice Overview"
+    "overview": "Invoice Overview",
+    "ref": "Ref",
+    "state": "State",
+    "to": "To"
   },
   "login": {
     "Back": "Back to home",

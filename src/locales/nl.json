@@ -175,10 +175,15 @@
     "Overview": "Overzicht"
   },
   "invoice": {
+    "amount": "Prijs",
     "balance": "Saldo",
     "fullName": "Naam",
+    "invoiceTable": "Factuuroverzicht",
     "open": "Open Factuuraccounts",
-    "overview": "Facturen Overzicht"
+    "overview": "Facturen Overzicht",
+    "ref": "Ref",
+    "state": "Status",
+    "to": "Aan"
   },
   "login": {
     "Back": "Ga terug",
