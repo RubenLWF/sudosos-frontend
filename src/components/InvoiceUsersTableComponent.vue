@@ -2,13 +2,13 @@
   <CardComponent :header="$t('invoice.open')">
     <DataTable
     :value="finalUsersData"
-  >
-    <Column field="fullName" :header="$t('invoice.fullName')" />
-    <Column field="balance" :header="$t('invoice.balance')">
-      <template #body="slotProps">
-        {{ formatPrice(slotProps.data.balance) }}
-      </template>
-    </Column>
+    >
+      <Column field="fullName" :header="$t('invoice.fullName')" />
+      <Column field="balance" :header="$t('invoice.balance')">
+        <template #body="slotProps">
+          {{ formatPrice(slotProps.data.balance) }}
+        </template>
+      </Column>
       <Column
         headerStyle="width: 3rem; text-align: center"
         bodyStyle="text-align: center; overflow: visible"
@@ -18,6 +18,7 @@
             type="button"
             icon="pi pi-file "
             outlined
+            @click="router.push(`/invoice/create/${slotProps.data.id}`)"
           />
         </template>
 
@@ -34,6 +35,7 @@ import apiService from "@/services/ApiService";
 import type { UserResponse } from "@sudosos/sudosos-client";
 import CardComponent from "@/components/CardComponent.vue";
 import { formatPrice } from "@/utils/formatterUtils";
+import router from "@/router";
 
 const finalUsersData: Ref<any[]> = ref([]);
 
@@ -46,7 +48,8 @@ onMounted(async () => {
     const balanceResponse = await apiService.balance.getBalanceId(user.id);
     return {
       fullName: `${user.firstName} ${user.lastName}`,
-      balance: balanceResponse.data.amount
+      balance: balanceResponse.data.amount,
+      id: user.id,
     };
   });
 

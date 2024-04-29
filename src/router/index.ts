@@ -23,6 +23,7 @@ import FineView from "@/views/FineView.vue";
 import LocalLoginView from "@/views/LocalLoginView.vue";
 import LoginLayout from "@/layout/LoginLayout.vue";
 import InvoiceView from "@/views/InvoiceView.vue";
+import InvoiceCreateView from "@/views/InvoiceCreateView.vue";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -174,6 +175,13 @@ const router = createRouter({
           name: 'banners',
           meta: { requiresAuth: true, isBoard: true }
         },
+        {
+          path: '/invoice/create/:forId',
+          component: InvoiceCreateView,
+          name: 'create-invoice',
+          props: true,
+          meta: { requiresAuth: true, isBAC: true }
+        }
         // Add other routes for authenticated users here
       ]
     }
