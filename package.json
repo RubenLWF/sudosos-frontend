@@ -1,0 +1,8 @@
+{
+    "name": "sudodos-frontend",
+    "workspaces": [
+        "apps/point-of-sale",
+        "apps/dashboard",
+        "lib/common"
+    ]
+}
